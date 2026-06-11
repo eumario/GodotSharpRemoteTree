@@ -4,7 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-		
+
 		<!-- Nuget Tags -->
 		<AssemblyTitle>Godot Remote Tree Inspector</AssemblyTitle>
 		<Description>A UI Element that allows you to inspect the SceneTree of a running Godot application.</Description>
@@ -21,9 +21,10 @@
       <PackageReference Include="GodotSharp" Version="4.6.0" />
       <PackageReference Include="GodotSharpEditor" Version="4.6.0" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <EmbeddedResource Label="remote_debugger_tree.res" Include="remote_debugger_tree.res" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>
