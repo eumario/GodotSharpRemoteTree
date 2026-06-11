@@ -6,6 +6,9 @@
         <Nullable>enable</Nullable>
 
 		<!-- Nuget Tags -->
+		<AssemblyName>GodotSharpRemoteTree</AssemblyName>
+		<Version>0.1.0</Version>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<AssemblyTitle>Godot Remote Tree Inspector</AssemblyTitle>
 		<Description>A UI Element that allows you to inspect the SceneTree of a running Godot application.</Description>
 		<PackageTags>godot;scenetree;remote;debug;debugging</PackageTags>
