@@ -11,14 +11,14 @@ added in order to have as close to 1:1 replication.
 To install this library, simply use dotnet command line tool, to add a package reference for this library.
 
 ```
-dotnet add package Godot.Sharp.RemoteTree
+dotnet add package GodotSharpRemoteTree
 ```
 
 Alternatively, you can add to your CSProj file, the following:
 
 ```xml
 <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-  <PackageReference Include="Godot.Sharp.RemoteTree"/>
+  <PackageReference Include="GodotSharpRemoteTree"/>
 </ItemGroup>
 ```
 
@@ -55,4 +55,5 @@ RemoteSceneTree, and will only effect the current run of the application.  It do
 ## Note:
 The same limitation that you normally have with C# and Godot with Variable types work the exact same here.  Currently, it cannot display C# types, that do not
 inherit from GodotObject class.  Also, currently there is no support for Resource inspection, and will just be displayed as a string of <classname:-instance_id>.
+
 Resource Inspection will be added in the future.
