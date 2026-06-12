@@ -307,9 +307,11 @@ public partial class InspectorPanel : PanelContainer
 
     private InspectorEditor CreateIntControl(GodotPropertyInfo gpi)
     {
-        if (gpi.Hint is PropertyHint.Enum or PropertyHint.Flags)
-            return new EnumEditor { GodotPropertyInfo = gpi };
-
-        return new NumericEditor { GodotPropertyInfo = gpi };
+        return gpi.Hint switch
+        {
+            PropertyHint.Enum => new EnumEditor { GodotPropertyInfo = gpi },
+            PropertyHint.Flags => new FlagsEditor { GodotPropertyInfo = gpi },
+            _ => new NumericEditor { GodotPropertyInfo = gpi }
+        };
     }
 }
