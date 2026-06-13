@@ -61,7 +61,10 @@ public partial class FlagsEditor : InspectorEditor
 	
 	public FlagsEditor()
 	{
-		_vbox = new VBoxContainer();
+		_vbox = new VBoxContainer
+		{
+			SizeFlagsHorizontal = SizeFlags.Expand | SizeFlags.ShrinkBegin,
+		};
 		AddChild(_vbox);
 	}
 }
