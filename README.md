@@ -34,13 +34,16 @@ using Godot.Sharp.RemoteTree;
 
 public partial class MyNode : Node
 {
-	public override _Ready()
+	public override void _Ready()
 	{
 		RemoteSceneTree.Enable();
 		// Initialize all your other stuff for your node.
 	}
 	
-	public override _ExitTree()
+	// Only call this when you are Exiting the Game, if you are changing
+	// scenes, do not disable it, as when you change scenes, it will disable
+	// the Inspector.
+	public override void _ExitTree()
 	{
 		RemoteSceneTree.Disable();
 	}
