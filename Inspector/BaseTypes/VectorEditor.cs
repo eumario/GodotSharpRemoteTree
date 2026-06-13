@@ -15,7 +15,6 @@ public partial class VectorEditor : InspectorEditor
 
     public VectorEditor()
     {
-        SizeFlagsHorizontal = SizeFlags.ShrinkBegin;
         _xField = new NumericEditor { LabelCustomMinimumSize = Vector2.Zero };
         _yField = new NumericEditor { LabelCustomMinimumSize = Vector2.Zero };
         _zField = new NumericEditor { LabelCustomMinimumSize = Vector2.Zero };
@@ -56,9 +55,11 @@ public partial class VectorEditor : InspectorEditor
         _yField.GodotPropertyInfo = propY;
         _xField.Visible = true;
         _yField.Visible = true;
+        
+        if (_gpi.Type is Variant.Type.Vector2 or Variant.Type.Vector2I)
+            _yField.SizeFlagsHorizontal = SizeFlags.Expand | SizeFlags.ShrinkBegin;
 
-        if (_gpi.Type == Variant.Type.Vector3 || _gpi.Type == Variant.Type.Vector3I ||
-            _gpi.Type == Variant.Type.Vector4 || _gpi.Type == Variant.Type.Vector4I)
+        if (_gpi.Type is Variant.Type.Vector3 or Variant.Type.Vector3I or Variant.Type.Vector4 or Variant.Type.Vector4I)
         {
             var propZ = new GodotPropertyInfo
             {
@@ -68,13 +69,15 @@ public partial class VectorEditor : InspectorEditor
                 Getter = GetZValue,
             };
             _zField.GodotPropertyInfo = propZ;
+            if (_gpi.Type is Variant.Type.Vector3 or Variant.Type.Vector3I)
+                _zField.SizeFlagsHorizontal = SizeFlags.Expand | SizeFlags.ShrinkBegin;
         }
         else
         {
             _zField.Visible = false;
         }
 
-        if (_gpi.Type == Variant.Type.Vector4 || _gpi.Type == Variant.Type.Vector4I)
+        if (_gpi.Type is Variant.Type.Vector4 or Variant.Type.Vector4I)
         {
             var propW = new GodotPropertyInfo
             {
@@ -84,6 +87,7 @@ public partial class VectorEditor : InspectorEditor
                 Getter = GetWValue,
             };
             _wField.GodotPropertyInfo = propW;
+            _wField.SizeFlagsHorizontal = SizeFlags.Expand | SizeFlags.ShrinkBegin;
         }
         else
         {
@@ -95,6 +99,7 @@ public partial class VectorEditor : InspectorEditor
     {
         if (_gpi == null) return default;
         var val = _gpi.Get();
+        
         return _gpi.Type switch
         {
             Variant.Type.Vector2 => val.AsVector2().X,
