@@ -9,7 +9,7 @@ public partial class NumericEditor : InspectorEditor
     {
         _spin = new SpinBox
         {
-            SizeFlagsHorizontal = SizeFlags.Fill,
+            SizeFlagsHorizontal = SizeFlags.Expand | SizeFlags.ShrinkBegin,
         };
         _spin.ValueChanged += HandleValueChanged;
         AddChild(_spin);
