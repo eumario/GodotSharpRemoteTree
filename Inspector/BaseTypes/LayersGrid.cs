@@ -2,14 +2,14 @@ namespace Godot.Sharp.RemoteTree.Inspector.BaseTypes;
 
 public partial class LayersGrid : Control
 {
-    private static Color FontColor = Color.FromHtml("ffffffbf");
-    private static Color FontDisabledColor = Color.FromHtml("ffffff59");
-    private static Color FontHoverColor = Color.FromHtml("ffffffd9");
-    private static Color HilightColor = Color.FromHtml("569eff46");
-    private static Color HilightDisabledColor = Color.FromHtml("2b4f80a3");
+    private static readonly Color FontColor = Color.FromHtml("ffffffbf");
+    private static readonly Color FontDisabledColor = Color.FromHtml("ffffff59");
+    private static readonly Color FontHoverColor = Color.FromHtml("ffffffd9");
+    private static readonly Color HighlightColor = Color.FromHtml("569eff46");
+    private static readonly Color HighlightDisabledColor = Color.FromHtml("2b4f80a3");
     
     private const uint HoveredIndexNone = UInt32.MaxValue;
-    private List<Rect2> _flagRects = [];
+    private readonly List<Rect2> _flagRects = [];
     private Rect2 _expandRect;
     private bool _expandHovered = false;
     private bool _expanded = false;
@@ -22,7 +22,9 @@ public partial class LayersGrid : Control
     // private PopupMenu _layerRename = null!;
     // private ConfirmationDialog _renameDialog = null!;
     // private LineEdit _renameDialogText = null!;
-    
+
+    [Signal]
+    public delegate void FlagChangedEventHandler(uint flag);
     
     public uint Value { get; set; }
     public int LayerGroupSize { get; set; }
@@ -91,7 +93,15 @@ public partial class LayersGrid : Control
                     Value = 1u << (int)_hoveredIndex;
                 }
             }
-        } else if (_expandHovered)
+            else
+            {
+                Value ^= 1u << (int)_hoveredIndex;
+            }
+
+            EmitSignalFlagChanged(Value);
+            QueueRedraw();
+        }
+        else if (_expandHovered)
         {
             _expanded = !_expanded;
             UpdateMinimumSize();
@@ -103,7 +113,7 @@ public partial class LayersGrid : Control
     {
         var font = GetThemeFont("font", "Label");
         var fontSize = GetThemeFontSize("font_size", "Label");
-        return new Vector2(0, font.GetHeight(fontSize) * 3);
+        return new Vector2((((font.GetHeight(fontSize) * 3) * 80 / 100) / 2) * (LayerGroupSize + 1), font.GetHeight(fontSize) * 3);
     }
 
     public override void _Notification(int what)
@@ -122,7 +132,7 @@ public partial class LayersGrid : Control
                 var bSize = (gridSize.Y * 80 / 100) / 2;
                 var h = bSize * 2 + 1;
 
-                var color = _readOnly ? HilightDisabledColor : HilightColor;
+                var color = _readOnly ? HighlightDisabledColor : HighlightColor;
                 var textColor = _readOnly ? FontDisabledColor : FontColor;
                 textColor.A *= 0.5f;
                 var textColorOn = _readOnly ? FontDisabledColor : FontHoverColor;
@@ -170,9 +180,9 @@ public partial class LayersGrid : Control
                         ofs.Y += bSize + 1;
                     }
 
-                    if (layerIndex > LayerCount)
+                    if (layerIndex >= LayerCount)
                     {
-                        if (_flagRects.Count != 0 && (_expansionRows == 0))
+                        if (_flagRects.Count != 0 && _expansionRows == 0)
                         {
                             var lastRect = _flagRects[^1];
                             arrowPos = lastRect.End;
@@ -206,7 +216,7 @@ public partial class LayersGrid : Control
                     }
                 }
 
-                if ((_expansionRows != prevExpansionRows) && _expanded)
+                if (_expansionRows != prevExpansionRows && _expanded)
                 {
                     UpdateMinimumSize();
                 }
@@ -216,18 +226,18 @@ public partial class LayersGrid : Control
 
                 var arrow = GetThemeIcon("arrow", "Tree");
 
-                var arrowColor = HilightColor;
+                var arrowColor = HighlightColor;
                 arrowColor.A = _expandHovered ? 1.0f : 0.6f;
 
                 arrowPos.X += 2.0f;
                 arrowPos.Y -= arrow.GetHeight();
 
                 var arrowSize = arrow.GetSize();
-                if (_expanded)
-                    arrowSize.Y *= -1.0f;
                 
                 var arrowDrawRect = new Rect2(arrowPos, arrowSize);
                 _expandRect = arrowDrawRect;
+                if (_expanded)
+                    arrowDrawRect.Size = arrowDrawRect.Size with { Y = arrowSize.Y * -1.0f };
 
                 var ci = GetCanvasItem();
                 arrow.DrawRect(ci, arrowDrawRect, false, arrowColor);
@@ -241,7 +251,7 @@ public partial class LayersGrid : Control
     
     public void SetReadOnly(bool readOnly) { _readOnly = readOnly; }
 
-    public Vector2 GetMinimumSize()
+    public override Vector2 _GetMinimumSize()
     {
         var minSize = GetGridSize();
 
@@ -258,7 +268,7 @@ public partial class LayersGrid : Control
     }
 
 
-    public string GetTooltip(Vector2 pos)
+    public override string _GetTooltip(Vector2 pos)
     {
         for (var i = 0; i < _flagRects.Count; i++)
         {
@@ -285,6 +295,7 @@ public partial class LayersGrid : Control
                     _draggingValueToSet != (Value & (1u << (int)_hoveredIndex)) >= 1)
                 {
                     Value ^= 1u << (int)_hoveredIndex;
+                    EmitSignalFlagChanged(Value);
                     QueueRedraw();
                 }
 
@@ -314,8 +325,12 @@ public partial class LayersGrid : Control
             }
         }
     }
-    
-    public void SetFlag(uint flag) { }
+
+    public void SetFlag(uint flag)
+    {
+        Value = flag;
+        QueueRedraw();
+    }
 
     public LayersGrid()
     {
