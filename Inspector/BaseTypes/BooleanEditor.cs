@@ -6,7 +6,10 @@ public partial class BooleanEditor : InspectorEditor
 
     public BooleanEditor() : base()
     {
-        _check = new CheckBox();
+        _check = new CheckBox
+        {
+            SizeFlagsHorizontal = SizeFlags.Expand | SizeFlags.ShrinkBegin,
+        };
         _check.Toggled += pressed => _gpi?.Set(pressed);
         AddChild(_check);
     }
