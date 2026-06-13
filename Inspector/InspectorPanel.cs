@@ -236,12 +236,8 @@ public partial class InspectorPanel : PanelContainer
             Variant.Type.Int => CreateIntControl(gpi),
             Variant.Type.Float => new NumericEditor { GodotPropertyInfo = gpi },
             Variant.Type.String => new StringEditor { GodotPropertyInfo = gpi },
-            Variant.Type.Vector2 => new VectorEditor { GodotPropertyInfo = gpi },
-            Variant.Type.Vector2I => new VectorEditor { GodotPropertyInfo = gpi },
-            Variant.Type.Vector3 => new VectorEditor { GodotPropertyInfo = gpi },
-            Variant.Type.Vector3I => new VectorEditor { GodotPropertyInfo = gpi },
-            Variant.Type.Vector4 => new VectorEditor { GodotPropertyInfo = gpi },
-            Variant.Type.Vector4I => new VectorEditor { GodotPropertyInfo = gpi },
+            Variant.Type.Vector2 or Variant.Type.Vector2I or Variant.Type.Vector3 or Variant.Type.Vector3I or 
+                Variant.Type.Vector4 or Variant.Type.Vector4I => new VectorEditor { GodotPropertyInfo = gpi },
             Variant.Type.Color => new ColorEditor { GodotPropertyInfo = gpi },
             _ => new StringEditor { GodotPropertyInfo = gpi }
         };
@@ -311,6 +307,10 @@ public partial class InspectorPanel : PanelContainer
         {
             PropertyHint.Enum => new EnumEditor { GodotPropertyInfo = gpi },
             PropertyHint.Flags => new FlagsEditor { GodotPropertyInfo = gpi },
+            PropertyHint.Layers2DRender or PropertyHint.Layers2DNavigation or PropertyHint.Layers2DPhysics or
+                PropertyHint.Layers3DRender or PropertyHint.Layers3DNavigation or PropertyHint.Layers3DPhysics or 
+                PropertyHint.LayersAvoidance => new LayersEditor { GodotPropertyInfo = gpi },
+            
             _ => new NumericEditor { GodotPropertyInfo = gpi }
         };
     }
