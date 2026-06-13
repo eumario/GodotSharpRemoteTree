@@ -8,7 +8,7 @@ public partial class ColorEditor : InspectorEditor
     {
         _colorButton = new ColorPickerButton
         {
-            SizeFlagsHorizontal = SizeFlags.ShrinkBegin,
+            SizeFlagsHorizontal = SizeFlags.Expand | SizeFlags.ShrinkBegin,
             CustomMinimumSize = new Vector2(80,30),
         };
 
