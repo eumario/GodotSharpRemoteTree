@@ -7,7 +7,7 @@
 
 		<!-- Nuget Tags -->
 		<AssemblyName>GodotSharpRemoteTree</AssemblyName>
-		<Version>0.1.0</Version>
+		<Version>0.2.0</Version>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<AssemblyTitle>Godot Remote Tree Inspector</AssemblyTitle>
 		<Description>A UI Element that allows you to inspect the SceneTree of a running Godot application.</Description>
@@ -15,7 +15,7 @@
 		<Authors>Mario Steele</Authors>
 		<RepositoryUrl>https://github.com/eumario/GodotSharpRemoteTree</RepositoryUrl>
 		<Copyright>Copyright (c) 2026 Mario Steele</Copyright>
-		<PackageReleaseNotes>Initial Release</PackageReleaseNotes>
+		<PackageReleaseNotes>Updated to include new Flags Inspector control, and new Layers Inspector Control, also cleanup UI layout some more, to make it easier to look through.</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
