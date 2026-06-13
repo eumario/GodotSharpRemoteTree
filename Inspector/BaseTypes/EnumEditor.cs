@@ -9,7 +9,7 @@ public partial class EnumEditor : InspectorEditor
     {
         _enumValues = new OptionButton
         {
-            SizeFlagsHorizontal = SizeFlags.ShrinkBegin,
+            SizeFlagsHorizontal = SizeFlags.Expand | SizeFlags.ShrinkBegin,
             
         };
         _enumValues.ItemSelected += HandleEnumSelected;
