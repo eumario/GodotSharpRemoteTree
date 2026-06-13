@@ -28,6 +28,7 @@ public partial class InspectorEditor : HBoxContainer
 
     public InspectorEditor()
     {
+        SizeFlagsHorizontal = SizeFlags.ExpandFill;
         _titleLabel = new Label
         {
             Text = _gpi?.Name.Replace("_", " ").Capitalize() ?? "Unknown",
