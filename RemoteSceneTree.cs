@@ -109,6 +109,8 @@ public partial class RemoteSceneTree : Window
 
     private void HandleChildEntered(Node node)
     {
+        if (node == null) return;
+        
         if (node == this || node.Name == "_RemoteSceneTree")
         {
             _treeNodes.Clear();
