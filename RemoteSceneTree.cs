@@ -25,7 +25,7 @@ public partial class RemoteSceneTree : Window
         if (!OS.HasFeature("editor")) return;
         _instance = new RemoteSceneTree();
         var sceneTree = (SceneTree?)Engine.GetMainLoop();
-        sceneTree?.Root.CallDeferred("add_child", _instance);
+        sceneTree?.Root.CallDeferred(Node.MethodName.AddChild, _instance);
     }
 
     public static void Disable()
